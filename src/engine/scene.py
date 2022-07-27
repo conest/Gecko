@@ -5,8 +5,10 @@ from .signal import Signal, Link
 
 
 class Scene:
+    objects: dict = {}
+    '''Commen objects dic'''
     surfaceGroup: list = []
-    ''' SurfaceItem List'''
+    '''SurfaceItem List'''
     links: list = []
     '''Signal links'''
 
@@ -24,7 +26,6 @@ class Scene:
 
     def process(self, delta: int):
         '''Scene self logic handle'''
-        # TODO
         pass
 
     def signal_handle(self):
@@ -32,8 +33,7 @@ class Scene:
             if link.signal_active():
                 link.call_target()
 
-    def event_handle(self, delta: int):
-        # TODO
+    def event_handle(self, event: pygame.event.Event, delta: int):
         pass
 
     def draw(self, screen: pygame.Surface):

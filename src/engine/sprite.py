@@ -2,8 +2,8 @@ from __future__ import annotations
 import pygame
 from .sufaceItem import SurfaceItem
 from .animation import Frame, AnimationGroup
-from .common import num
-from .common.vect import Vec2Int
+from .lib import num
+from .lib.vect import Vec2i
 
 
 class Sprite(SurfaceItem):
@@ -17,25 +17,22 @@ class Sprite(SurfaceItem):
     # Frame number, useful for sprites sheets
     _max_frame: int = 1
     _frame: int = 1
-    _frame_coords: Vec2Int = Vec2Int(0, 0)
+    _frame_coords: Vec2i = Vec2i(0, 0)
 
     # Selected frame rect, use for draw on a surface
     _frame_rect: pygame.Rect
-    _frame_rect_size: Vec2Int = Vec2Int(0, 0)
+    _frame_rect_size: Vec2i = Vec2i(0, 0)
 
     # HACK: set offset and separation
-    _frame_offset: Vec2Int = Vec2Int(0, 0)
-    _frame_separation: Vec2Int = Vec2Int(0, 0)
+    _frame_offset: Vec2i = Vec2i(0, 0)
+    _frame_separation: Vec2i = Vec2i(0, 0)
 
     def __init__(self, surface: pygame.Surface):
         super().__init__()
         self.spritesheet = surface
-        if pygame.get_init():
-            self.spritesheet = self.spritesheet.convert_alpha()
-
         rect = self.spritesheet.get_rect()
         self._frame_rect = rect
-        self._frame_rect_size = Vec2Int(rect.w, rect.h)
+        self._frame_rect_size = Vec2i(rect.w, rect.h)
         self.name = "Sprite"
 
     def new_from_img(imgPath: str) -> Sprite:
@@ -46,7 +43,7 @@ class Sprite(SurfaceItem):
     def draw(self, surface: pygame.Surface):
         '''(@Sprite) Overload SurfaceItem's draw method for better performance'''
         if self.visible:
-            surface.blit(self.spritesheet, self.position, self._frame_rect)
+            surface.blit(self.spritesheet, self.position.to_tuple_int(), self._frame_rect)
 
     def set_framesHV(self, h: int, v: int):
         '''Set horizontal and vertical numbers for the sprite sheet'''
@@ -55,7 +52,7 @@ class Sprite(SurfaceItem):
         self._max_frame = self._Hframes * self._Vframes - 1
         rect_size_x = self.spritesheet.get_width() // self._Hframes
         rect_size_y = self.spritesheet.get_height() // self._Vframes
-        self._frame_rect_size = Vec2Int(rect_size_x, rect_size_y)
+        self._frame_rect_size = Vec2i(rect_size_x, rect_size_y)
         self.size = pygame.Rect((0, 0), (rect_size_x, rect_size_y))
 
     def set_max_frame(self, max_frame: int):
@@ -84,6 +81,9 @@ class Sprite(SurfaceItem):
 
     def frame_rect(self) -> pygame.Rect:
         return self._frame_rect
+
+    def frame_size(self) -> Vec2i:
+        return self._frame_rect_size
 
     def _update_surface(self):
         '''[Abandoned]'''
@@ -131,4 +131,4 @@ class AnimatedSprite(Sprite):
         '''(@AnimatedSprite) Overload SurfaceItem's draw method'''
         if self.visible:
             rect = self.animation.rect()
-            surface.blit(self.spritesheet, self.position, rect)
+            surface.blit(self.spritesheet, self.position.to_tuple_int(), rect)

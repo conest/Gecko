@@ -18,6 +18,9 @@ class Resource:
     def surface(self, name: str) -> pygame.Surface:
         return self._surfaces[name]
 
+    def set_surface(self, name: str, surface: pygame.Surface):
+        self._surfaces[name] = surface
+
     def add_surface(self, name: str, path: str, convertAlpha: bool = True):
         self._check_path(path)
         # TODO: Check name duplicate
@@ -32,6 +35,14 @@ class Resource:
         self._check_path(path)
         # TODO: Check name duplicate
         self._fonts[name] = pygame.font.Font(path, size)
+
+    def sound(self, name: str) -> pygame.mixer.Sound:
+        return self._sounds[name]
+
+    def add_sound(self, name: str, path: str):
+        self._check_path(path)
+        # TODO: Check name duplicate
+        self._sounds[name] = pygame.mixer.Sound(path)
 
 
 resource = Resource()

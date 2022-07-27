@@ -11,10 +11,14 @@ class Status(Enum):
 class Frame:
     rect: pygame.Rect
     duration: int  # milliseconds
+    loopback: int
+    '''Index that go to the target frame when current frame played.
+        Set -1 to close loopback function'''
 
-    def __init__(self, rect: pygame.Rect, duration: float):
+    def __init__(self, rect: pygame.Rect, duration: float, loopback: int = -1):
         self.rect = rect
         self.duration = duration
+        self.loopback = loopback
 
 
 class Animation:

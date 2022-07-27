@@ -15,20 +15,25 @@ def isInited() -> bool:
     return _inited
 
 
-def init(windowSize: tuple, flag: int, caption: str):
+def init(windowSize: tuple, flag: int, caption: str, vsync: int = 1):
     global _inited
     global screen
     pygame.init()
     pygame.display.set_caption(caption)
-    screen = pygame.display.set_mode(windowSize, flag)
+    screen = pygame.display.set_mode(windowSize, flag, vsync=vsync)
     _inited = True
 
 
 def default_init():
-    WINDOW_SIZE = (400, 225)
+    WINDOW_SIZE = (800, 450)
     WINDOW_FLAG = pygame.RESIZABLE | pygame.SCALED
-    WINDOW_CAPTION = "My Not That Awesome Game"
-    init(WINDOW_SIZE, WINDOW_FLAG, WINDOW_CAPTION)
+    WINDOW_CAPTION = "My Awesome Game"
+    init(WINDOW_SIZE, WINDOW_FLAG, WINDOW_CAPTION, vsync=1)
+
+
+def set_fps(fps: int):
+    global fpsLimit
+    fpsLimit = fps
 
 
 def load_scene(s: Scene):
@@ -50,6 +55,7 @@ def run():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            scene.event_handle(event, delta)
 
         scene.update(delta)
         scene.process(delta)
