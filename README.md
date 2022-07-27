@@ -2,7 +2,7 @@
 
 A python game engine based on pygame
 
-NOTE: This project is made for education purpose. No further development or optimizing plan.
+NOTE: This project is built for education purposes. No further development or optimization plan.
 
 ## Current methods
 
@@ -14,6 +14,7 @@ NOTE: This project is made for education purpose. No further development or opti
 * Signal
 * Button
 * Text Container
+* Simple Physical lib
 
 Example:
 
