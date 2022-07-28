@@ -28,7 +28,7 @@ def approach(s: Rect, des: Rect, m: Vec2f, t: Rect) -> tuple[Vec2f, bool, bool]:
         xdis = s.x - (t.x + t.w)
 
     if m.y >= 0:
-        ydis = t.y - (s.y + s.h)
+        ydis = t.y - (s.y + s.h) + 1
     else:
         ydis = s.y - (t.y + t.h)
 

@@ -39,6 +39,12 @@ class Vec2f:
     def to_tuple_int(self) -> tuple:
         return (int(self.x), int(self.y))
 
+    def __eq__(self, o) -> bool:
+        if self.x == o.x and self.y == o.y:
+            return True
+        else:
+            return False
+
     def __add__(self, o) -> Vec2f:
         return Vec2f(self.x + o.x, self.y + o.y)
 

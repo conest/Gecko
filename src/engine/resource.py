@@ -21,6 +21,12 @@ class Resource:
     def set_surface(self, name: str, surface: pygame.Surface):
         self._surfaces[name] = surface
 
+    def scale_surface(self, name: str, zoom: float):
+        rect = self.surface(name).get_rect()
+        sizex = (rect.w * zoom, rect.h * zoom)
+        surfacex = pygame.transform.scale(self.surface(name), sizex)
+        self.set_surface(name, surfacex)
+
     def add_surface(self, name: str, path: str, convertAlpha: bool = True):
         self._check_path(path)
         # TODO: Check name duplicate

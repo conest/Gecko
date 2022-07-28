@@ -120,7 +120,11 @@ class AnimatedSprite(Sprite):
             coord_x: int = fTuple[0]
             coord_y: int = fTuple[1]
             duration: int = fTuple[2]
-            frame = Frame(self.rect_from_coords(coord_x, coord_y), duration)
+            if len(fTuple) == 4:
+                loopback: int = fTuple[3]
+                frame = Frame(self.rect_from_coords(coord_x, coord_y), duration, loopback)
+            else:
+                frame = Frame(self.rect_from_coords(coord_x, coord_y), duration)
             self.animation.animations[name].add_frame(frame)
 
     def update(self, delta: int):
