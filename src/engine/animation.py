@@ -38,14 +38,13 @@ class Animation:
     def add_frame(self, frame: Frame):
         self.frames.append(frame)
 
-    def update(self, alpha: int) -> bool:
+    def update(self, delta: int) -> bool:
         '''Return True if finished'''
-        self.time += alpha
+        self.time += delta
         duration = self.frames[self.fIndex].duration
 
         while (self.time >= duration):
             # Next frame
-            # TODO: loop back
             self.time -= duration
 
             if self.frames[self.fIndex].loopback >= 0:
@@ -120,11 +119,11 @@ class AnimationGroup:
     def rect(self) -> pygame.Rect:
         return self.animations[self.select].rect()
 
-    def update(self, alpha: int):
+    def update(self, delta: int):
         assert(self.select), "No animation select or loaded!"
         if self.status == Status.PAUSE:
             return
-        finished = self.animations[self.select].update(alpha)
+        finished = self.animations[self.select].update(delta)
         if finished:
             if self.nextPlay:
                 self.play(self.nextPlay, self.nextStart)
