@@ -11,12 +11,39 @@ class Vec2i:
     def __str__(self) -> str:
         return f'[Vec2i] (x: {self.x}, y: {self.y})'
 
+    def __eq__(self, o) -> bool:
+        if self.x == o.x and self.y == o.y:
+            return True
+        else:
+            return False
+
+    def __add__(self, o) -> Vec2i:
+        return Vec2i(self.x + o.x, self.y + o.y)
+
+    def __sub__(self, o) -> Vec2i:
+        return Vec2i(self.x - o.x, self.y - o.y)
+
+    def __mul__(self, o) -> Vec2i:
+        return Vec2i(self.x * o, self.y * o)
+
+    def __truediv__(self, o) -> Vec2i:
+        return Vec2i(self.x / o, self.y / o)
+
+    def __floordiv__(self, o) -> Vec2i:
+        return Vec2i(self.x // o, self.y // o)
+
     def set(self, x: int = 0, y: int = 0) -> None:
         self.x = x
         self.y = y
 
+    def volume(self) -> int:
+        return self.x * self.y
+
     def to_tuple(self) -> tuple:
         return (self.x, self.y)
+
+    def duplicate(self) -> Vec2i:
+        return Vec2i(self.x, self.y)
 
 
 class Vec2f:

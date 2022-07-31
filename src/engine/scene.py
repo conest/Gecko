@@ -49,6 +49,14 @@ class Scene:
             self._check_name_unique(si.name)
         self.surfaceGroup.append(si)
 
+    def delete_surface(self, name: str) -> bool:
+        '''Return False if nothing find in the list with the given name'''
+        for i, o in enumerate(self.surfaceGroup):
+            if o.name == name:
+                del self.surfaceGroup[i]
+                return True
+        return False
+
     def _check_name_unique(self, name: str):
         for s in self.surfaceGroup:
             if s.name == name:
