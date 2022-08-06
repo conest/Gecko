@@ -1,10 +1,7 @@
 #! /usr/bin/env python3
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 import engine
-from example_animation import gameScene
-# from example_text_button import gameScene
+from animation_scene import gameScene
 
 
 def main():
@@ -14,7 +11,7 @@ def main():
     engine.main.init(WINDOW_SIZE, WINDOW_FLAG, WINDOW_CAPTION)
     # engine.main.default_init()
 
-    gameScene.init(gameScene)
+    gameScene.init()
 
     engine.main.load_scene(gameScene)
     engine.main.run()

@@ -1,3 +1,4 @@
+import functools
 import pygame
 from engine.resource import resource
 from engine.scene import Scene
@@ -49,4 +50,4 @@ def init(self):
 
 
 gameScene = Scene()
-gameScene.init = init
+gameScene.init = functools.partial(init, gameScene)

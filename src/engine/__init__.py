@@ -1,4 +1,4 @@
-from engine import main  # noqa: F401
+from engine.main import engine as main  # noqa: F401
 from engine import resource  # noqa: F401
 from engine.lib import vect  # noqa: F401
 from engine.lib import num  # noqa: F401

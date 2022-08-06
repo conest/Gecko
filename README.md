@@ -19,11 +19,7 @@ NOTE: This project is built for education purposes. No further development or op
 Example:
 
 ``` bash
-.run_example.sh
-```
-
-or
-
-``` bash
-python src/start.py
+python3 src/text_button_signal.py
+python3 src/animation.py
+python3 src/scene_change.py
 ```

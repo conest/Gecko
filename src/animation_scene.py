@@ -1,3 +1,4 @@
+import functools
 from engine.resource import resource
 from engine.scene import Scene
 from engine.sprite import AnimatedSprite
@@ -45,4 +46,4 @@ def init(self):
 
 
 gameScene = Scene()
-gameScene.init = init
+gameScene.init = functools.partial(init, gameScene)

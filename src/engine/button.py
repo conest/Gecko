@@ -1,6 +1,6 @@
 import pygame
 from .sufaceItem import SurfaceItem
-from .signal import Signal, SignalGroup
+from .signal import Signal
 
 
 # Button module

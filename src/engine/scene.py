@@ -1,7 +1,16 @@
+from __future__ import annotations
 from typing import Callable
+
 import pygame
 from .sufaceItem import SurfaceItem
 from .signal import Signal, Link
+
+
+class SceneSignal:
+    endGame: bool = False
+    changeScene: bool = False
+    name: str
+    reset: False
 
 
 class Scene:
@@ -19,22 +28,25 @@ class Scene:
     def init(self):
         pass
 
+    def reset(self):
+        pass
+
     def update(self, delta: int):
         '''Update surface graphic'''
         for s in self.surfaceGroup:
             s.update(delta)
 
-    def process(self, delta: int):
+    def process(self, delta: int) -> SceneSignal:
         '''Scene self logic handle'''
+        pass
+
+    def event_handle(self, event: pygame.event.Event, delta: int):
         pass
 
     def signal_handle(self):
         for link in self.links:
             if link.signal_active():
                 link.call_target()
-
-    def event_handle(self, event: pygame.event.Event, delta: int):
-        pass
 
     def draw(self, screen: pygame.Surface):
         '''Draw surface graph on the screen'''
