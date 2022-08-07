@@ -29,10 +29,10 @@ class GridInt:
     def length(self) -> int:
         return self._size.volume()
 
-    def reset(self, nInt: int):
+    def reset(self, nInt: int = 0):
         for i in range(self.arr):
             self.arr[i] = nInt
-	
+
     def set_grid(self, x: int, y: int, v: int):
         self.arr[self._idx(x, y)] = v
 
@@ -41,7 +41,7 @@ class GridInt:
 
     # Genarate unique ID
     def pairing_id(self, x: int, y: int) -> int:
-        return ( x + y ) * ( x + y + 1 ) / 2 + y
+        return((x + y) * (x + y + 1) / 2 + y)
 
     # Check if a position in this grid
     def in_grid(self, x: int, y: int) -> bool:

@@ -14,7 +14,7 @@ def nmark(n: numbers) -> int:
         return 0
 
 
-def approach(n: float, t: float, step: float) -> float:
+def approach(n: numbers, t: numbers, step: numbers) -> numbers:
     '''Return a number n that is trying to approach(become) t, in step'''
     if n > t:
         if n - step > t:
