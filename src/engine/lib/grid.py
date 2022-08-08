@@ -23,6 +23,12 @@ class GridInt:
     def _idx(self, x: int, y: int) -> int:
         return self._size.x * y + x
 
+    def loc_from_idx(self, idx: int) -> Vec2i:
+        assert(idx < self.length()), "[GridInt] Out of index range"
+        y: int = idx // self._size.x
+        x: int = idx % self._size.x
+        return Vec2i(x, y)
+
     def size(self) -> Vec2i:
         return self._size
 
@@ -30,7 +36,7 @@ class GridInt:
         return self._size.volume()
 
     def reset(self, nInt: int = 0):
-        for i in range(self.arr):
+        for i in range(self.length()):
             self.arr[i] = nInt
 
     def set_grid(self, x: int, y: int, v: int):

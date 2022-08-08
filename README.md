@@ -1,6 +1,6 @@
 # Gecko
 
-A python game engine based on pygame
+A python game toolset based on pygame
 
 NOTE: This project is built for education purposes. No further development or optimization plan.
 

@@ -21,6 +21,7 @@ class SurfaceItem(Object):
 
     def new(self, x: int, y: int):
         self.surface = pygame.Surface((x, y), pygame.SRCALPHA)
+        self.size = pygame.Rect(0, 0, x, y)
 
     def rect(self) -> pygame.Rect:
         return pygame.Rect(self.position.x, self.position.y, self.size.w, self.size.h)
