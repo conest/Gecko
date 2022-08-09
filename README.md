@@ -8,6 +8,7 @@ NOTE: This project is built for education purposes. No further development or op
 
 * Sprite
 * Animation
+* TileMap
 * Font
 * Resource management
 * Scene
@@ -22,4 +23,5 @@ Example:
 python3 src/text_button_signal.py
 python3 src/animation.py
 python3 src/scene_change.py
+python3 src/tilemap.py
 ```
