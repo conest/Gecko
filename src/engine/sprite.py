@@ -1,7 +1,7 @@
 from __future__ import annotations
 import pygame
-from .sufaceItem import SurfaceItem
-from .animation import Frame, AnimationGroup
+from .surfaceItem import SurfaceItem
+from .animation import Frame, Animation, AnimationGroup
 from .lib import num
 from .lib.vect import Vec2i
 
@@ -39,11 +39,6 @@ class Sprite(SurfaceItem):
         '''For debuging'''
         img: pygame.Surface = pygame.image.load(imgPath)
         return Sprite(img)
-
-    def draw(self, surface: pygame.Surface):
-        '''(@Sprite) Overload SurfaceItem's draw method for better performance'''
-        if self.visible:
-            surface.blit(self.spritesheet, self.position.to_tuple_int(), self._frame_rect)
 
     def set_framesHV(self, h: int, v: int):
         '''Set horizontal and vertical numbers for the sprite sheet'''
@@ -90,6 +85,14 @@ class Sprite(SurfaceItem):
         self.surface = pygame.Surface((self.size.w, self.size.h), pygame.SRCALPHA).convert_alpha()
         self.surface.blit(self.spritesheet, (0, 0), self._frame_rect)
 
+    def draw(self, surface: pygame.Surface):
+        '''(@Sprite) Overload SurfaceItem's draw method for better performance'''
+        if self.visible:
+            surface.blit(self.spritesheet, self.position.to_tuple_int(), self._frame_rect)
+
+    def draw_directly(self, surface: pygame.Surface):
+        surface.blit(self.spritesheet, (0, 0), area=self._frame_rect)
+
 
 class AnimatedSprite(Sprite):
 
@@ -127,12 +130,20 @@ class AnimatedSprite(Sprite):
                 frame = Frame(self.rect_from_coords(coord_x, coord_y), duration)
             self.animation.animations[name].add_frame(frame)
 
-    def update(self, delta: int):
-        '''(@AnimatedSprite) Overload SurfaceItem's update method for updating animation'''
-        self.animation.update(delta)
+    def add_and_load_animation(self, name: str, frames: list, repeat: bool = True):
+        self.animation.add(name, Animation(repeat))
+        self.animation_bunch_frame_load(name, frames)
+
+    def update(self, delta: int) -> bool:
+        '''(@AnimatedSprite) Overload Object's update method for updating animation'''
+        return self.animation.update(delta)
 
     def draw(self, surface: pygame.Surface):
         '''(@AnimatedSprite) Overload SurfaceItem's draw method'''
         if self.visible:
             rect = self.animation.rect()
             surface.blit(self.spritesheet, self.position.to_tuple_int(), rect)
+
+    def draw_directly(self, surface: pygame.Surface):
+        rect = self.animation.rect()
+        surface.blit(self.spritesheet, (0, 0), area=rect)

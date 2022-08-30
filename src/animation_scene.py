@@ -5,13 +5,13 @@ from engine.sprite import AnimatedSprite
 from engine.animation import Frame, Animation
 
 
-def init(self):
+def init(self: Scene):
     resource.add_surface("duck", "assets/duck.png")
 
     duck = AnimatedSprite(resource.surface("duck"))
     duck.set_framesHV(15, 17)
     duck.set_position(64, 64)
-    self.add_surface(duck)
+    self.surfaceList.add(duck)
 
     animate = Animation(True)
     animate.add_frame(Frame(duck.rect_from_coords(0, 12), 100))
@@ -32,7 +32,7 @@ def init(self):
     duck2 = AnimatedSprite(resource.surface("duck"))
     duck2.set_framesHV(15, 17)
     duck2.set_position(100, 100)
-    self.add_surface(duck2)
+    self.surfaceList.add(duck2)
 
     frames: list = [
         (0, 13, 150), (1, 13, 150), (2, 13, 150), (3, 13, 150),

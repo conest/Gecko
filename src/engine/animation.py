@@ -1,3 +1,5 @@
+from typing import Dict
+
 from enum import Enum, auto
 import pygame
 
@@ -38,13 +40,15 @@ class Animation:
     def add_frame(self, frame: Frame):
         self.frames.append(frame)
 
-    def update(self, delta: int) -> bool:
-        '''Return True if finished'''
+    def update(self, delta: int) -> tuple[bool, bool]:
+        '''Return (updated, finished)'''
+        updated = False
         self.time += delta
         duration = self.frames[self.fIndex].duration
 
         while (self.time >= duration):
             # Next frame
+            updated = True
             self.time -= duration
 
             if self.frames[self.fIndex].loopback >= 0:
@@ -56,12 +60,12 @@ class Animation:
                 self.fIndex = 0
                 if not self.repeat:
                     self.stop()
-                    return True
+                    return (updated, True)
             else:
                 self.fIndex += 1
                 duration = self.frames[self.fIndex].duration
 
-        return False
+        return (updated, False)
 
     def rect(self) -> pygame.Rect:
         return self.frames[self.fIndex].rect
@@ -75,7 +79,7 @@ class Animation:
 
 
 class AnimationGroup:
-    animations: dict
+    animations: Dict[str, Animation]
     '''Class[Animation] dict {Str: Animation}'''
     select: str
     '''Name of selected animation'''
@@ -119,13 +123,15 @@ class AnimationGroup:
     def rect(self) -> pygame.Rect:
         return self.animations[self.select].rect()
 
-    def update(self, delta: int):
+    def update(self, delta: int) -> bool:
+        '''Return if animation updated'''
         assert(self.select), "No animation select or loaded!"
         if self.status == Status.PAUSE:
-            return
-        finished = self.animations[self.select].update(delta)
+            return False
+        (updated, finished) = self.animations[self.select].update(delta)
         if finished:
             if self.nextPlay:
                 self.play(self.nextPlay, self.nextStart)
             else:
                 self.pause()
+        return updated

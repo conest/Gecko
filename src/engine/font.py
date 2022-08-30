@@ -1,5 +1,5 @@
 import pygame
-from .sufaceItem import SurfaceItem
+from .surfaceItem import SurfaceItem
 
 
 class Font(SurfaceItem):
@@ -18,5 +18,6 @@ class Font(SurfaceItem):
         self._update(ns)
 
     def _update(self, ns: pygame.Surface):
-        self.surface = pygame.Surface((ns.get_width(), ns.get_height()), pygame.SRCALPHA).convert_alpha()
+        self.new(ns.get_width(), ns.get_height())
+        # self.surface = pygame.Surface((ns.get_width(), ns.get_height()), pygame.SRCALPHA).convert_alpha()
         self.surface.blit(ns, (0, 0))

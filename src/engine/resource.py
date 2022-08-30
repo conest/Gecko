@@ -6,11 +6,13 @@ class Resource:
     _surfaces: dict
     _fonts: dict
     _sounds: dict
+    _uniqueInt: int
 
     def __init__(self):
         self._surfaces = {}
         self._fonts = {}
         self._sounds = {}
+        self._uniqueInt = 0
 
     def _check_path(self, path: str):
         assert(os.path.exists(path)), f"File load failed. [{path}]"
@@ -49,6 +51,10 @@ class Resource:
         self._check_path(path)
         # TODO: Check name duplicate
         self._sounds[name] = pygame.mixer.Sound(path)
+
+    def unique_num(self) -> str:
+        self._uniqueInt += 1
+        return str(self._uniqueInt)
 
 
 resource = Resource()

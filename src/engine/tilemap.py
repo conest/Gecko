@@ -2,7 +2,7 @@ import pygame
 from .lib import num
 from .lib.grid import GridInt
 from .lib.vect import Vec2i
-from .sufaceItem import SurfaceItem
+from .surfaceItem import SurfaceItem
 
 
 class TileMap(SurfaceItem):
@@ -22,10 +22,11 @@ class TileMap(SurfaceItem):
 
     def __init__(self, x: int, y: int, tileSize: int = 16):
         super().__init__()
+        self.name = "TileMap"
         self.tileSize = tileSize
-        self.grid = GridInt(Vec2i(x, y))
+        self.grid = GridInt(x, y)
         self.grid.reset(-1)
-        self.dirty_grid = GridInt(Vec2i(x, y))
+        self.dirty_grid = GridInt(x, y)
         self.grid.reset(0)
         self.new(x * tileSize, y * tileSize)
 
@@ -40,11 +41,14 @@ class TileMap(SurfaceItem):
         rect_size_x = self.tileSheet.get_width() // self._Hframes
         rect_size_y = self.tileSheet.get_height() // self._Vframes
         self._frame_rect_size = Vec2i(rect_size_x, rect_size_y)
-        self.size = pygame.Rect((0, 0), (rect_size_x, rect_size_y))
 
     def set_map(self, x: int, y: int, v: int):
         self.grid.set_grid(x, y, v)
         self.dirty_grid.set_grid(x, y, 1)
+
+    def set_map_direct(self, i: int, v: int):
+        self.grid.arr[i] = v
+        self.dirty_grid.arr[i] = 1
 
     def set_map_by_sheet_xy(self, x: int, y: int, vec: Vec2i):
         v = vec.x + vec.y * self._Hframes
@@ -59,6 +63,16 @@ class TileMap(SurfaceItem):
             sheet_rect = self._rect_from_frame(tile)
             sur_rect = self._rect_to_surface(loc.x, loc.y)
             self.surface.blit(self.tileSheet, sur_rect, sheet_rect)
+
+    def update_surface_on_tile(self, v: Vec2i):
+        idx = self.dirty_grid._idx(v.x, v.y)
+        if self.dirty_grid.arr[idx] == 0:
+            return
+        self.dirty_grid.arr[idx] = 0
+        loc = self.grid.loc_from_idx(idx)
+        sheet_rect = self._rect_from_frame(self.grid.get_v(v))
+        sur_rect = self._rect_to_surface(loc.x, loc.y)
+        self.surface.blit(self.tileSheet, sur_rect, sheet_rect)
 
     def _rect_to_surface(self, x: int, y: int) -> pygame.Rect:
         sx = x * self.tileSize

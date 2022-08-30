@@ -18,7 +18,7 @@ def init(self):
     tileMap.set_map_by_sheet_xy(2, 2, Vec2i(8, 12))
 
     tileMap.update_surface()
-    self.add_surface(tileMap)
+    self.surfaceList.add(tileMap)
 
 
 gameScene = Scene()

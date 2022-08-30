@@ -43,9 +43,10 @@ class Engine:
         if ss.endGame:
             return False
         if ss.changeScene:
-            scene = self.sceneDic[ss.name]
+            self.scene = self.sceneDic[ss.name]
+            print(f'change to {self.scene.name}')
             if ss.reset:
-                scene.reset()
+                self.scene.reset()
         return True
 
     def run(self):
@@ -54,9 +55,9 @@ class Engine:
 
         fps = pygame.time.Clock()
         running = True
-        scene = self.scene
 
         while running:
+            scene = self.scene
             delta: int = fps.tick(self.fpsLimit)
 
             for event in pygame.event.get():

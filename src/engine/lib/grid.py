@@ -8,11 +8,14 @@ class GridInt:
     arr: array
     _size: Vec2i
 
-    def __init__(self, size: Vec2i) -> None:
-        self._size = size
+    def __init__(self, x: int, y: int) -> None:
+        self._size = Vec2i(x, y)
         self.arr = array('i')
         for _ in range(self.length()):
             self.arr.append(0)
+
+    def from_vect(v: Vec2i) -> GridInt:
+        return GridInt(v.x, v.y)
 
     def __getitem__(self, key: tuple[int, int]) -> int:
         return self.get(key[0], key[1])
@@ -42,8 +45,14 @@ class GridInt:
     def set_grid(self, x: int, y: int, v: int):
         self.arr[self._idx(x, y)] = v
 
+    def set_grid_v(self, vec: Vec2i, v: int):
+        self.arr[self._idx(vec.x, vec.y)] = v
+
     def get(self, x: int, y: int) -> int:
         return self.arr[self._idx(x, y)]
+
+    def get_v(self, vec: Vec2i) -> int:
+        return self.arr[self._idx(vec.x, vec.y)]
 
     # Genarate unique ID
     def pairing_id(self, x: int, y: int) -> int:

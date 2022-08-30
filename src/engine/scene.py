@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Callable
 
 import pygame
-from .sufaceItem import SurfaceItem
+from .surfaceItem import SurfaceList
 from .signal import Signal, Link
 
 
@@ -16,13 +16,12 @@ class SceneSignal:
 class Scene:
     objects: dict = {}
     '''Commen objects dic'''
-    surfaceGroup: list = []
-    '''SurfaceItem List'''
-    links: list = []
+    surfaceList: SurfaceList
+    links: list[Link] = []
     '''Signal links'''
 
     def __init__(self):
-        self.surfaceGroup = []
+        self.surfaceList = SurfaceList()
         self.links = []
 
     def init(self):
@@ -30,11 +29,6 @@ class Scene:
 
     def reset(self):
         pass
-
-    def update(self, delta: int):
-        '''Update surface graphic'''
-        for s in self.surfaceGroup:
-            s.update(delta)
 
     def process(self, delta: int) -> SceneSignal:
         '''Scene self logic handle'''
@@ -48,42 +42,16 @@ class Scene:
             if link.signal_active():
                 link.call_target()
 
+    def update(self, delta: int):
+        self.surfaceList.update(delta)
+
     def draw(self, screen: pygame.Surface):
-        '''Draw surface graph on the screen'''
-        for s in self.surfaceGroup:
-            s.draw(screen)
+        self.surfaceList.draw(screen)
 
-    def sort_surfaces(self):
-        self.surfaceGroup.sort(key=lambda s: s.zIndex)
+    def link(self, source: Signal, targetFunc: Callable):
+        self.links.append(Link(source, targetFunc))
 
-    def add_surface(self, si: SurfaceItem, checkDup: bool = True):
-        if checkDup:
-            self._check_name_unique(si.name)
-        self.surfaceGroup.append(si)
-
-    def delete_surface(self, name: str) -> bool:
-        '''Return False if nothing find in the list with the given name'''
-        for i, o in enumerate(self.surfaceGroup):
-            if o.name == name:
-                del self.surfaceGroup[i]
-                return True
-        return False
-
-    def _check_name_unique(self, name: str):
-        for s in self.surfaceGroup:
-            if s.name == name:
-                print(f'[WARNING] Find surface name duplicated: {s.name}')
-
-    def check_all_surface_name(self, logout: bool = False) -> dict:
-        nameDict = {}
-        for s in self.surfaceGroup:
-            if s.name in nameDict:
-                if logout:
-                    print(f'[WARNING] Find surface name duplicated: {s.name}')
-                return {'dup_name': s.name}
-            else:
-                nameDict[s.name] = True
-        return {}
-
-    def link(self, source: Signal, target: SurfaceItem, targetFunc: Callable):
-        self.links.append(Link(source, target, targetFunc))
+    def delete_obj(self, name: str, isSurface: bool = False):
+        del self.objects[name]
+        if isSurface:
+            self.surfaceList.delete(name)

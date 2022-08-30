@@ -1,5 +1,5 @@
 import pygame
-from .sufaceItem import SurfaceItem
+from .surfaceItem import SurfaceItem
 
 
 class TextContainer(SurfaceItem):
